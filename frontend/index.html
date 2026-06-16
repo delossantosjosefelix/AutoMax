@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Gestión de Vehículos</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='14' fill='%23fff' letter-spacing='1'%3EAM%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+</head>
+<body>
+
+  <div id="toast-container" aria-live="polite"></div>
+
+  <header class="site-header" id="main-content">
+    <nav class="nav">
+      <div class="container nav-container">
+        <a href="#" class="nav-logo">AM</a>
+        <ul class="nav-links">
+          <li><a href="#registro" data-i18n="nav_reg">Registro</a></li>
+          <li><a href="#inventario" data-i18n="nav_inv">Inventario</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="hero">
+      <div class="container hero-top">
+        <div class="hero-text">
+          <div class="hero-eyebrow">Agencia Premium · Est. 2024</div>
+          <h1 class="hero-title">AUTO<span class="hero-title-outline">MAX</span></h1>
+          <p class="hero-tagline" data-i18n="hero_tag">Portal de Gestión de Flota</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number" id="stat-total">0</span>
+            <span class="stat-label" data-i18n="stat_veh">Vehículos</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number" id="stat-marcas">0</span>
+            <span class="stat-label" data-i18n="stat_marcas">Marcas</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number" id="stat-valor">$0</span>
+            <span class="stat-label" data-i18n="stat_val">Valor Inventario</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="registro" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">— 01</span>
+          <h2 class="section-title" data-i18n="sec_reg">Registro de Vehículo</h2>
+        </div>
+
+        <div class="form-wrapper">
+          <div class="form-grid">
+            <div class="field-group" id="fg-codigo">
+              <label for="codigo" class="field-label" data-i18n="lbl_cod">Código</label>
+              <input type="text" id="codigo" class="field-input" placeholder="Ej. AM01" data-i18n="ph_cod" autocomplete="off" />
+              <span class="field-error" id="err-codigo"></span>
+            </div>
+            <div class="field-group" id="fg-marca">
+              <label for="marca" class="field-label" data-i18n="lbl_marca">Marca</label>
+              <input type="text" id="marca" class="field-input" placeholder="Ej. Toyota" data-i18n="ph_marca" autocomplete="off" />
+              <span class="field-error" id="err-marca"></span>
+            </div>
+            <div class="field-group" id="fg-modelo">
+              <label for="modelo" class="field-label" data-i18n="lbl_mod">Modelo</label>
+              <input type="text" id="modelo" class="field-input" placeholder="Ej. Hilux" data-i18n="ph_mod" autocomplete="off" />
+              <span class="field-error" id="err-modelo"></span>
+            </div>
+            <div class="field-group" id="fg-anio">
+              <label for="anio" class="field-label" data-i18n="lbl_anio">Año</label>
+              <div class="qty-stepper year-stepper">
+                <button type="button" class="qty-btn" id="anio-minus" aria-label="Restar año">−</button>
+                <input type="number" id="anio" class="field-input qty-input" placeholder="2024" data-i18n="ph_anio" min="1990" max="2026" />
+                <button type="button" class="qty-btn" id="anio-plus" aria-label="Sumar año">+</button>
+              </div>
+              <span class="field-error" id="err-anio"></span>
+            </div>
+            <div class="field-group" id="fg-color">
+              <label for="color" class="field-label" data-i18n="lbl_color">Color</label>
+              <div class="color-field">
+                <input type="text" id="color" class="field-input color-input" placeholder="Ej. Negro Mate" data-i18n="ph_color" autocomplete="off" />
+                <button type="button" class="color-trigger" id="color-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Elegir color">
+                  <i data-lucide="palette"></i>
+                </button>
+                <div class="color-popover" id="color-popover">
+                  <div class="color-swatches" id="color-swatches">
+                    <button type="button" class="swatch-btn" data-color="Negro" data-i18n-color="sw_negro" style="--sw-color:#0a0a0a;">
+                      <span class="swatch-box"></span><span class="swatch-name">Negro</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Blanco" data-i18n-color="sw_blanco" style="--sw-color:#f5f5f5;">
+                      <span class="swatch-box"></span><span class="swatch-name">Blanco</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Gris" data-i18n-color="sw_gris" style="--sw-color:#8a8a8a;">
+                      <span class="swatch-box"></span><span class="swatch-name">Gris</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Plata" data-i18n-color="sw_plata" style="--sw-color:#c0c0c0;">
+                      <span class="swatch-box"></span><span class="swatch-name">Plata</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Rojo" data-i18n-color="sw_rojo" style="--sw-color:#c0392b;">
+                      <span class="swatch-box"></span><span class="swatch-name">Rojo</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Azul" data-i18n-color="sw_azul" style="--sw-color:#2e5fa3;">
+                      <span class="swatch-box"></span><span class="swatch-name">Azul</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Verde" data-i18n-color="sw_verde" style="--sw-color:#2e7d4f;">
+                      <span class="swatch-box"></span><span class="swatch-name">Verde</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Amarillo" data-i18n-color="sw_amarillo" style="--sw-color:#e0c12e;">
+                      <span class="swatch-box"></span><span class="swatch-name">Amarillo</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Naranja" data-i18n-color="sw_naranja" style="--sw-color:#d9772f;">
+                      <span class="swatch-box"></span><span class="swatch-name">Naranja</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Café" data-i18n-color="sw_cafe" style="--sw-color:#6b4423;">
+                      <span class="swatch-box"></span><span class="swatch-name">Café</span>
+                    </button>
+                    <button type="button" class="swatch-btn" data-color="Dorado" data-i18n-color="sw_dorado" style="--sw-color:#c9a13b;">
+                      <span class="swatch-box"></span><span class="swatch-name">Dorado</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <span class="field-error" id="err-color"></span>
+            </div>
+            <div class="field-group select-group" id="fg-combustible">
+              <label class="field-label-static" data-i18n="lbl_comb">Combustible</label>
+              <div class="fuel-select" id="fuel-select">
+                <button type="button" class="fuel-trigger" id="fuel-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="fuel-icon" id="fuel-icon"></span>
+                  <span class="fuel-value" id="fuel-value" data-i18n="opt_sel">— Seleccionar —</span>
+                  <i class="fuel-arrow" data-lucide="chevron-down"></i>
+                </button>
+                <ul class="fuel-options" id="fuel-options" role="listbox">
+                  <li class="fuel-option" data-value="Gasolina" data-icon="fuel" data-i18n="opt_gas" role="option"><i data-lucide="fuel"></i><span>Gasolina</span></li>
+                  <li class="fuel-option" data-value="Diésel" data-icon="droplet" data-i18n="opt_die" role="option"><i data-lucide="droplet"></i><span>Diésel</span></li>
+                  <li class="fuel-option" data-value="Eléctrico" data-icon="zap" data-i18n="opt_elec" role="option"><i data-lucide="zap"></i><span>Eléctrico</span></li>
+                  <li class="fuel-option" data-value="Híbrido" data-icon="refresh-cw" data-i18n="opt_hib" role="option"><i data-lucide="refresh-cw"></i><span>Híbrido</span></li>
+                  <li class="fuel-option" data-value="GLP" data-icon="flame" data-i18n="opt_glp" role="option"><i data-lucide="flame"></i><span>GLP</span></li>
+                </ul>
+              </div>
+              <select id="combustible" class="field-select sr-only-select" tabindex="-1" aria-hidden="true">
+                <option value="" data-i18n="opt_sel">— Seleccionar —</option>
+                <option value="Gasolina" data-i18n="opt_gas">Gasolina</option>
+                <option value="Diésel" data-i18n="opt_die">Diésel</option>
+                <option value="Eléctrico" data-i18n="opt_elec">Eléctrico</option>
+                <option value="Híbrido" data-i18n="opt_hib">Híbrido</option>
+                <option value="GLP" data-i18n="opt_glp">GLP</option>
+              </select>
+              <span class="field-error" id="err-combustible"></span>
+            </div>
+            <div class="field-group" id="fg-precio">
+              <label for="precio" class="field-label" data-i18n="lbl_precio">Precio (USD)</label>
+              <div class="price-field">
+                <span class="price-prefix">$</span>
+                <input type="number" id="precio" class="field-input price-input" placeholder="25,000.00" data-i18n="ph_precio" min="1" step="0.01" />
+              </div>
+              <span class="field-error" id="err-precio"></span>
+            </div>
+            <div class="field-group" id="fg-cantidad">
+              <label for="cantidad" class="field-label" data-i18n="lbl_cant">Cantidad</label>
+              <div class="qty-stepper">
+                <button type="button" class="qty-btn" id="qty-minus" aria-label="Restar">−</button>
+                <input type="number" id="cantidad" class="field-input qty-input" placeholder="0" data-i18n="ph_cant" min="1" step="1" />
+                <button type="button" class="qty-btn" id="qty-plus" aria-label="Sumar">+</button>
+              </div>
+              <span class="field-error" id="err-cantidad"></span>
+            </div>
+          </div>
+          <div class="field-group field-group--full" id="fg-descripcion">
+            <label for="descripcion" class="field-label" data-i18n="lbl_desc">Descripción</label>
+            <textarea id="descripcion" class="field-input field-textarea" placeholder="Ej. Vehículo de transmisión automática..." data-i18n="ph_desc" rows="2"></textarea>
+            <span class="field-error" id="err-descripcion"></span>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="btn-submit" class="btn btn--primary" onclick="guardarDatos()">
+              <span class="btn-text" data-i18n="btn_reg">Registrar Vehículo</span>
+            </button>
+            <button type="button" id="btn-cancel" class="btn btn--ghost" onclick="cancelarEdicion()" style="display:none;" data-i18n="btn_cancel">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inventario" class="section section--dark">
+      <div class="container">
+        <div class="section-header section-header--between">
+          <div>
+            <span class="section-tag section-tag--light">— 02</span>
+            <h2 class="section-title section-title--light" data-i18n="sec_inv">Inventario</h2>
+          </div>
+          <div class="search-wrapper">
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar…" data-i18n="ph_buscar" oninput="filtrarVehiculos()" />
+            <span class="search-icon">⌕</span>
+          </div>
+        </div>
+
+        <div id="empty-state" class="empty-state">
+          <div class="empty-number">∅</div>
+          <p class="empty-title" data-i18n="empty_title">Sin vehículos registrados</p>
+          <p class="empty-sub" data-i18n="empty_sub">Usa el formulario para comenzar tu inventario.</p>
+        </div>
+
+        <div id="table-wrapper" class="table-wrapper" style="display:none;">
+          <table class="vehicle-table">
+            <thead>
+              <tr>
+                <th data-i18n="th_cod">Código</th>
+                <th data-i18n="th_marca">Marca</th>
+                <th data-i18n="th_mod">Modelo</th>
+                <th data-i18n="th_anio">Año</th>
+                <th data-i18n="th_color">Color</th>
+                <th data-i18n="th_comb">Comb.</th>
+                <th data-i18n="th_precio">Precio</th>
+                <th data-i18n="th_cant">Cant.</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tabla-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <a href="#" class="nav-logo">AM</a>
+        <div class="footer-lang">
+          <span id="lang-es" class="lang-btn active" onclick="cambiarIdioma('es')">ES</span> / 
+          <span id="lang-en" class="lang-btn" onclick="cambiarIdioma('en')">EN</span>
+        </div>
+      </div>
+      <div class="footer-center">
+        <a href="mailto:hola@automax.com" class="footer-email">HOLA@AUTOMAX.COM</a>
+      </div>
+      <div class="footer-right">
+        <span class="footer-copy" data-i18n="ft_copy">© 2026 AUTOMAX. TODOS LOS DERECHOS RESERVADOS.</span>
+        <div class="footer-legal-links">
+          <a href="#" data-i18n="ft_term">TÉRMINOS</a>
+          <a href="#" data-i18n="ft_priv">PRIVACIDAD</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
