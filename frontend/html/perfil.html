@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Mi Perfil</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/perfil.css" />
+</head>
+<body>
+<main id="main-content">
+
+  <!-- PAGE BAR -->
+  <div class="page-bar">
+    <span class="page-bar-num">07</span>
+    <span class="page-bar-divider"></span>
+    <h2 class="page-bar-title">Mi Perfil</h2>
+  </div>
+
+  <section class="section">
+
+    <!-- GUEST PREVIEW BANNER -->
+    <div class="guest-banner" id="perfil-guest-banner" style="display:none">
+      <div class="guest-banner-body">
+        <i data-lucide="eye"></i>
+        <div>
+          <strong>Modo de Vista Previa (Invitado)</strong>
+          <span>Explora el sistema con privilegios de Empleado (Lectura). Los registros y cambios están bloqueados para esta demostración.</span>
+        </div>
+      </div>
+      <button class="btn btn--primary btn-sm" onclick="cerrarSesion()"><i data-lucide="log-in"></i> Iniciar Sesión</button>
+    </div>
+
+    <!-- HERO CARD -->
+    <div class="prf-hero">
+      <div class="prf-avatar-wrap">
+        <div class="avatar--lg" id="perfil-avatar">U</div>
+        <label class="prf-avatar-upload-btn" id="perfil-avatar-upload-label" title="Cambiar foto de perfil">
+          <i data-lucide="camera"></i>
+          <input type="file" id="perfil-avatar-input" accept="image/*" style="display:none" onchange="uploadAvatarPerfil(this)" />
+        </label>
+      </div>
+      <div class="prf-hero-body">
+        <div class="prf-hero-name" id="perfil-hero-nombre">Cargando...</div>
+        <div class="prf-hero-meta">
+          <span class="role-badge" id="perfil-hero-rol">Cargando...</span>
+          <span class="prf-hero-date" id="perfil-hero-fecha"></span>
+          <button class="prf-avatar-clear-link" id="perfil-avatar-clear-btn" onclick="eliminarAvatarPerfil()" style="display:none"><i data-lucide="trash-2"></i> Eliminar foto</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PANELS -->
+    <div class="prf-panels">
+
+      <!-- Panel 1: Información Personal -->
+      <div class="prf-panel" id="panel-info">
+        <button class="prf-panel-header" onclick="togglePanel('panel-info')">
+          <div class="prf-panel-title">
+            <i data-lucide="user"></i>
+            <span data-i18n="perfil_panel_info">Información Personal</span>
+          </div>
+          <i data-lucide="chevron-down" class="prf-panel-chevron"></i>
+        </button>
+        <div class="prf-panel-body">
+          <!-- Read-only rows -->
+          <div class="prf-row">
+            <span class="prf-label" data-i18n="lbl_nombre">Nombre</span>
+            <span class="prf-value" id="perfil-val-nombre">—</span>
+          </div>
+          <div class="prf-row">
+            <span class="prf-label" data-i18n="lbl_correo">Correo</span>
+            <span class="prf-value" id="perfil-val-correo">—</span>
+          </div>
+          <div class="prf-row">
+            <span class="prf-label" data-i18n="lbl_rol">Rol</span>
+            <span class="prf-value" id="perfil-val-rol-label">—</span>
+          </div>
+          <!-- Edit form (hidden by default) -->
+          <div id="perfil-edit-fields" style="display:none" class="prf-edit-group">
+            <div class="field-group" id="fg-perfil-nombre">
+              <label class="field-label" data-i18n="lbl_nombre">Nombre completo</label>
+              <input class="field-input" id="perfil-nombre" type="text" />
+              <span class="field-error" id="err-perfil-nombre"></span>
+            </div>
+            <div class="field-group" id="fg-perfil-correo">
+              <label class="field-label" data-i18n="lbl_correo">Correo electrónico</label>
+              <input class="field-input" id="perfil-correo" type="email" />
+              <span class="field-error" id="err-perfil-correo"></span>
+            </div>
+          </div>
+          <div class="prf-actions" id="perfil-info-actions">
+            <button id="perfil-btn-edit" class="btn btn--secondary btn-sm" onclick="toggleEditarPerfil()">
+              <i data-lucide="pencil"></i> <span data-i18n="btn_editar">Editar</span>
+            </button>
+            <button id="perfil-btn-save" class="btn btn--primary btn-sm" style="display:none" onclick="guardarPerfil()">
+              <i data-lucide="save"></i> <span data-i18n="btn_guardar">Guardar</span>
+            </button>
+            <button id="perfil-btn-cancel" class="btn btn--ghost btn-sm" style="display:none" onclick="cancelarEditarPerfil()"><span data-i18n="btn_cancelar">Cancelar</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Sucursal (hidden for admin) -->
+      <div class="prf-panel" id="perfil-card-sucursal">
+        <button class="prf-panel-header" onclick="togglePanel('perfil-card-sucursal')">
+          <div class="prf-panel-title">
+            <i data-lucide="building-2"></i>
+            <span data-i18n="fs_sucursal_asignada">Sucursal Asignada</span>
+          </div>
+          <i data-lucide="chevron-down" class="prf-panel-chevron"></i>
+        </button>
+        <div class="prf-panel-body">
+          <div class="prf-row">
+            <span class="prf-label" data-i18n="lbl_suc_actual">Sucursal actual</span>
+            <span class="prf-value" id="perfil-val-sucursal">—</span>
+          </div>
+          <!-- Hidden sucursal select label for compatibility -->
+          <div style="display:none">
+            <span id="perfil-val-sucursal2"></span>
+          </div>
+          <div id="perfil-suc-edit-fields" style="display:none" class="prf-edit-group">
+            <div class="field-group">
+              <label class="field-label" data-i18n="lbl_cambiar_sucursal">Cambiar sucursal</label>
+              <div id="perfil-sucursal-dropdown" class="custom-select">
+                <button class="custom-select-trigger" type="button">
+                  <span class="custom-select-value">Sin asignar</span>
+                  <span class="custom-select-icon"></span>
+                </button>
+                <ul class="custom-select-options" role="listbox"></ul>
+              </div>
+              <select id="perfil-sucursal" style="display:none"></select>
+            </div>
+          </div>
+          <div class="prf-actions" id="perfil-suc-actions">
+            <button id="perfil-btn-suc-edit" class="btn btn--secondary btn-sm" onclick="toggleEditarSucursal()">
+              <i data-lucide="map-pin"></i> <span data-i18n="perfil_btn_cambiar_suc">Cambiar</span>
+            </button>
+            <button id="perfil-btn-suc-save" class="btn btn--primary btn-sm" style="display:none" onclick="cambiarSucursalPerfil()">
+              <i data-lucide="save"></i> <span data-i18n="btn_guardar">Guardar</span>
+            </button>
+            <button id="perfil-btn-suc-cancel" class="btn btn--ghost btn-sm" style="display:none" onclick="cancelarEditarSucursal()"><span data-i18n="btn_cancelar">Cancelar</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Seguridad -->
+      <div class="prf-panel" id="panel-password">
+        <button class="prf-panel-header" onclick="togglePanel('panel-password')">
+          <div class="prf-panel-title">
+            <i data-lucide="lock"></i>
+            <span data-i18n="perfil_panel_seguridad">Seguridad</span>
+          </div>
+          <i data-lucide="chevron-down" class="prf-panel-chevron"></i>
+        </button>
+        <div class="prf-panel-body">
+          <div class="guest-only-block" id="perfil-pass-guest-notice" style="display:none">
+            <p class="guest-notice-text" data-i18n="perfil_guest_pass_notice">El cambio de contraseña no está disponible en el modo de demostración.</p>
+          </div>
+          <div id="perfil-pass-fields" class="prf-edit-group">
+            <div class="field-group" id="fg-perfil-actual">
+              <label class="field-label" data-i18n="lbl_pass_actual">Contraseña actual</label>
+              <div class="field-input-wrap">
+                <input class="field-input" id="perfil-pass-actual" type="password" autocomplete="current-password" />
+                <button type="button" class="field-eye-btn" onclick="togglePasswordPerfil('perfil-pass-actual', this)" tabindex="-1">
+                  <i data-lucide="eye-off"></i>
+                </button>
+              </div>
+            </div>
+            <div class="field-group" id="fg-perfil-nueva">
+              <label class="field-label" data-i18n="lbl_pass_nueva">Nueva contraseña</label>
+              <div class="field-input-wrap">
+                <input class="field-input" id="perfil-pass-nueva" type="password" autocomplete="new-password" />
+                <button type="button" class="field-eye-btn" onclick="togglePasswordPerfil('perfil-pass-nueva', this)" tabindex="-1">
+                  <i data-lucide="eye-off"></i>
+                </button>
+              </div>
+            </div>
+            <ul class="req-list" id="perfil-password-requirements">
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i><span data-i18n="perfil_pass_req_min">Mín. 6 caracteres</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i><span data-i18n="perfil_pass_req_upper">Una mayúscula</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i><span data-i18n="perfil_pass_req_number">Un número</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i><span data-i18n="perfil_pass_req_special">Un carácter especial</span></li>
+            </ul>
+            <div class="strength-bar"><div id="perfil-password-strength"></div></div>
+            <span class="field-error" id="err-perfil-actual"></span>
+            <span class="field-error" id="err-perfil-nueva"></span>
+            <div class="prf-actions" style="margin-top:12px">
+              <button class="btn btn--secondary btn-sm" onclick="cambiarPasswordPerfil()">
+                <i data-lucide="lock"></i> <span data-i18n="btn_cambiar_pass">Actualizar Contraseña</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Estadísticas de Actividad -->
+      <div class="prf-panel" id="panel-stats">
+        <button class="prf-panel-header" onclick="togglePanel('panel-stats')">
+          <div class="prf-panel-title">
+            <i data-lucide="bar-chart-3"></i>
+            <span data-i18n="fs_estadisticas">Estadísticas de Actividad</span>
+          </div>
+          <i data-lucide="chevron-down" class="prf-panel-chevron"></i>
+        </button>
+        <div class="prf-panel-body">
+          <div id="perfil-stats-empty" style="display:none" class="empty-activity-notice">
+            <p data-i18n="perfil_stats_empty">Aún no has registrado vehículos. Tu historial aparecerá aquí cuando comiences a inventariar.</p>
+          </div>
+          <div id="perfil-stats-content">
+            <div class="prf-stats-row">
+              <div class="stat-mini">
+                <div class="stat-mini-body">
+                  <span class="stat-mini-number" id="perfil-stat-total">0</span>
+                  <span class="stat-mini-label" id="perfil-stat-total-label">Vehículos registrados</span>
+                </div>
+              </div>
+              <div class="stat-mini" id="perfil-stat-extra-card">
+                <div class="stat-mini-body">
+                  <span class="stat-mini-number" id="perfil-stat-extra-val">Hoy</span>
+                  <span class="stat-mini-label" id="perfil-stat-extra-label">Última actividad</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-wrapper-perfil" style="height:180px; margin-top:16px;">
+              <canvas id="chart-perfil-actividad"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: Preferencias -->
+      <div class="prf-panel" id="panel-preferencias">
+        <button class="prf-panel-header" onclick="togglePanel('panel-preferencias')">
+          <div class="prf-panel-title">
+            <i data-lucide="sliders-horizontal"></i>
+            <span data-i18n="fs_preferencias">Preferencias</span>
+          </div>
+          <i data-lucide="chevron-down" class="prf-panel-chevron"></i>
+        </button>
+        <div class="prf-panel-body">
+          <div class="prf-row prf-row--action">
+            <div>
+              <span class="prf-label">Idioma</span>
+              <span class="prf-hint">Idioma de la interfaz</span>
+            </div>
+            <div class="prf-toggle-group">
+              <button class="prf-toggle-btn" id="pref-lang-es" onclick="setPrefIdioma('es')">ES</button>
+              <button class="prf-toggle-btn" id="pref-lang-en" onclick="setPrefIdioma('en')">EN</button>
+            </div>
+          </div>
+          <div class="prf-row prf-row--action">
+            <div>
+              <span class="prf-label">Vista por defecto</span>
+              <span class="prf-hint">Cómo se muestran los vehículos</span>
+            </div>
+            <div class="prf-toggle-group">
+              <button class="prf-toggle-btn" id="pref-view-table" onclick="setPrefVista('table')">
+                <i data-lucide="rows-3"></i> Tabla
+              </button>
+              <button class="prf-toggle-btn" id="pref-view-cards" onclick="setPrefVista('cards')">
+                <i data-lucide="layout-grid"></i> Tarjetas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /prf-panels -->
+
+  </section>
+
+</main>
+</body>
+</html>

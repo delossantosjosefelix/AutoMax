@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Dashboard</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+  <main id="main-content">
+
+    <!-- PAGE BAR -->
+    <div class="page-bar">
+      <span class="page-bar-num">01</span>
+      <span class="page-bar-divider"></span>
+      <h2 class="page-bar-title" data-i18n="sec_dashboard">Dashboard</h2>
+    </div>
+
+    <section class="section">
+
+      <!-- GREETING -->
+      <div class="dashboard-top-row">
+        <p class="dashboard-greeting" id="dashboard-greeting"></p>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-hero">
+          <div class="stat-hero-body">
+            <span class="stat-hero-number" id="stat-total">0</span>
+            <span class="stat-hero-label" data-i18n="stat_veh">Vehículos en inventario</span>
+          </div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-body">
+            <span class="stat-mini-number" id="stat-nuevos">0</span>
+            <span class="stat-mini-label" data-i18n="stat_nuevos">Nuevos</span>
+          </div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-body">
+            <span class="stat-mini-number" id="stat-usados">0</span>
+            <span class="stat-mini-label" data-i18n="stat_usados">Usados</span>
+          </div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-body">
+            <span class="stat-mini-number" id="stat-marcas">0</span>
+            <span class="stat-mini-label" data-i18n="stat_marcas">Marcas</span>
+          </div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-body">
+            <span class="stat-mini-number" id="stat-valor">$0</span>
+            <span class="stat-mini-label" data-i18n="stat_valor">Valor total</span>
+          </div>
+        </div>
+        <div id="dashboard-sucursal-dropdown" class="custom-select custom-select--stat">
+          <button class="custom-select-trigger" type="button" aria-expanded="false">
+            <span class="custom-select-value" data-i18n="opt_todas_suc">Todas las sucursales</span>
+            <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+          </button>
+          <ul class="custom-select-options" role="listbox"></ul>
+        </div>
+        <select id="dashboard-sucursal-select" style="display:none"></select>
+      </div>
+
+      <!-- GUEST NOTICE -->
+      <div class="guest-notice" id="guest-notice-dashboard" style="display:none">
+        <i data-lucide="info"></i>
+        <span data-i18n="guest_limit_notice">Mostrando los primeros vehículos. Inicia sesión para ver el inventario completo.</span>
+      </div>
+
+      <!-- RECENT VEHICLES -->
+      <div class="dashboard-recent">
+        <div class="dashboard-recent-header">
+          <i data-lucide="clock"></i>
+          <h3 data-i18n="lbl_ultimos_reg">Últimos registrados</h3>
+          <span id="stat-total-label"></span>
+        </div>
+        <table class="recent-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th data-i18n="lbl_vehiculo">Vehículo</th>
+              <th data-i18n="th_anio">Año</th>
+              <th data-i18n="th_precio">Precio</th>
+            </tr>
+          </thead>
+          <tbody id="recent-vehicles-body">
+            <tr><td colspan="4" style="text-align:center;color:rgba(255,255,255,0.2);padding:24px;font-size:12px;" data-i18n="lbl_cargando">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="dashboard-charts">
+        <div class="chart-panel">
+          <div class="chart-panel-header">
+            <i data-lucide="pie-chart"></i>
+            <div>
+              <h3 data-i18n="chart_fuel">Combustible</h3>
+              <span data-i18n="chart_fuel_sub">Distribución por tipo</span>
+            </div>
+          </div>
+          <div class="chart-wrapper"><canvas id="chart-fuel"></canvas></div>
+        </div>
+        <div class="chart-panel">
+          <div class="chart-panel-header">
+            <i data-lucide="bar-chart-3"></i>
+            <div>
+              <h3 data-i18n="chart_brands">Marcas</h3>
+              <span data-i18n="chart_brands_sub">Top 8 por unidades</span>
+            </div>
+          </div>
+          <div class="chart-wrapper"><canvas id="chart-brands"></canvas></div>
+        </div>
+        <div class="chart-panel chart-panel--full">
+          <div class="chart-panel-header">
+            <i data-lucide="trending-up"></i>
+            <div>
+              <h3 data-i18n="chart_years">Valor por año</h3>
+              <span data-i18n="chart_years_sub">Valor total según año del vehículo</span>
+            </div>
+          </div>
+          <div class="chart-wrapper"><canvas id="chart-years"></canvas></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</body>
+</html>

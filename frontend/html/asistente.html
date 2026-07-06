@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Asistente Virtual</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/asistente.css" />
+</head>
+<body>
+  <main id="main-content">
+    <div class="page-bar page-bar--simple">
+      <h2 class="page-bar-title" data-i18n="sec_asistente">Asistente Virtual</h2>
+    </div>
+
+    <section class="asistente-section">
+      <div class="asistente-container">
+        <div class="chat-messages" id="chat-messages"></div>
+
+        <div class="chat-quick-actions" id="chat-quick-actions">
+          <button class="chat-q-btn" data-action="inventario">
+            <i data-lucide="list"></i> <span data-i18n="chat_btn_inventario">Ver inventario</span>
+          </button>
+          <button class="chat-q-btn" data-action="marca">
+            <i data-lucide="search"></i> <span data-i18n="chat_btn_marca">Buscar por marca</span>
+          </button>
+          <button class="chat-q-btn" data-action="precio">
+            <i data-lucide="dollar-sign"></i> <span data-i18n="chat_btn_precio">Rango de precio</span>
+          </button>
+          <button class="chat-q-btn" data-action="nuevos">
+            <i data-lucide="sparkles"></i> <span data-i18n="chat_btn_nuevos">Ver nuevos</span>
+          </button>
+          <button class="chat-q-btn" data-action="usados">
+            <i data-lucide="recycle"></i> <span data-i18n="chat_btn_usados">Ver usados</span>
+          </button>
+        </div>
+
+        <div class="chat-input-area">
+          <input type="text" class="chat-input" id="chat-input" placeholder="Escribe tu mensaje..." data-i18n="chat_input_ph" />
+          <button type="button" class="chat-send-btn" id="chat-send-btn" title="Enviar">
+            <i data-lucide="send"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

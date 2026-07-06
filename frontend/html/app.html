@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Gestión de Vehículos</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='14' fill='%23fff' letter-spacing='1'%3EAM%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <!-- Page-specific CSS is loaded dynamically by script.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="../js/script.js"></script>
+  <script>if (localStorage.getItem('sidebarCollapsed') === 'true') document.documentElement.classList.add('pre-collapsed');</script>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo" id="sidebar-toggle" role="button" tabindex="0" aria-label="Toggle sidebar">
+      <span class="logo-icon">
+        <span class="logo-a">A</span><span class="logo-m-outline">M</span>
+        <span class="logo-full">AUTOMAX</span>
+      </span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="sidebar-link" data-page="dashboard">
+        <i data-lucide="home"></i>
+        <span data-i18n="nav_dashboard">Inicio</span>
+      </a>
+      <div class="sidebar-section-divider"></div>
+      <div class="sidebar-section-label" data-i18n="nav_sec_vehiculos">Vehículos</div>
+      <a href="#nuevos" class="sidebar-link guest-hidden" data-page="nuevos">
+        <i data-lucide="sparkles"></i>
+        <span data-i18n="nav_nuevos">Vehículos Nuevos</span>
+      </a>
+      <a href="#usados" class="sidebar-link guest-hidden" data-page="usados">
+        <i data-lucide="recycle"></i>
+        <span data-i18n="nav_usados">Vehículos Usados</span>
+      </a>
+      <a href="#inventario" class="sidebar-link guest-hidden" data-page="inventario">
+        <i data-lucide="list"></i>
+        <span data-i18n="nav_inv">Inventario</span>
+      </a>
+      <div class="sidebar-section-divider"></div>
+      <div class="sidebar-section-label" data-i18n="nav_sec_gestion">Gestión</div>
+      <a href="#sucursales" class="sidebar-link guest-hidden" data-page="sucursales">
+        <i data-lucide="map-pin"></i>
+        <span data-i18n="nav_sucursales">Sucursales</span>
+      </a>
+      <a href="#registro" class="sidebar-link guest-hidden" data-page="registro">
+        <i data-lucide="plus-circle"></i>
+        <span data-i18n="nav_reg">Registro</span>
+      </a>
+      <div class="sidebar-section-divider"></div>
+      <div class="sidebar-section-label" data-i18n="nav_sec_cuenta">Cuenta</div>
+      <a href="#perfil" class="sidebar-link" data-page="perfil" id="nav-perfil">
+        <i data-lucide="user-circle"></i>
+        <span data-i18n="nav_perfil">Mi Perfil</span>
+      </a>
+      <a href="#admin" class="sidebar-link role-gated" data-roles="admin" data-page="admin" id="nav-admin">
+        <i data-lucide="shield"></i>
+        <span data-i18n="nav_admin">Administrar Usuarios</span>
+      </a>
+      <div class="sidebar-section-divider"></div>
+      <div class="sidebar-section-label" data-i18n="nav_sec_info">Información</div>
+      <a href="#nosotros" class="sidebar-link" data-page="nosotros">
+        <i data-lucide="info"></i>
+        <span data-i18n="nav_nosotros">Nosotros</span>
+      </a>
+      <a href="#asistente" class="sidebar-link" data-page="asistente">
+        <i data-lucide="bot"></i>
+        <span data-i18n="nav_asistente">Asistente Virtual</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer" id="sidebar-footer">
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content" id="main-content">
+    <div id="page-skeleton" class="page-skeleton">
+      <div class="skel skel-tag"></div>
+      <div class="skel skel-title"></div>
+      <div class="skel-row">
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+      </div>
+      <div class="skel-grid">
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card skel-card--wide"></div>
+      </div>
+    </div>
+    <div id="toast-container" aria-live="polite"></div>
+    <div id="app-content"></div>
+  </main>
+
+
+
+  <script>
+    window.onload = () => { initApp().catch(console.error); };
+  </script>
+</body>
+
+</html>

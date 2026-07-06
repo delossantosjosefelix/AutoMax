@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="page_title_login">AUTOMAX — Acceso</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='14' fill='%23fff' letter-spacing='1'%3EAM%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../css/login.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <script src="../js/login.js" defer></script>
+</head>
+
+<body>
+  <div id="toast-container" aria-live="polite"></div>
+
+  <div class="login-layout">
+    <!-- Panel izquierdo -->
+    <div class="login-visual">
+      <div class="visual-content">
+        <div class="visual-brand">AUTO<span>MAX</span></div>
+        <div class="visual-tagline" data-i18n="visual_tagline">Gestión de Flota · 2026</div>
+      </div>
+      <span class="visual-badge" data-i18n="visual_badge">Sistema seguro</span>
+    </div>
+
+    <!-- Panel derecho -->
+    <div class="login-panel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <span class="panel-logo">AM</span>
+          <div class="panel-tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')"><span data-i18n="login_tab_login">Iniciar sesión</span></button>
+            <button class="tab-btn" id="tab-register" onclick="switchTab('register')"><span data-i18n="login_tab_register">Registrarse</span></button>
+          </div>
+        </div>
+
+        <!-- Login -->
+        <form id="form-login" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+          <div class="form-title">
+            <h2 data-i18n="login_title">Bienvenido</h2>
+            <p data-i18n="login_subtitle">Accede a tu cuenta</p>
+          </div>
+          <div class="field-group" id="lg-fg-correo">
+            <label class="field-label" data-i18n="lbl_correo">Correo electrónico</label>
+            <div class="input-with-icon">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="lg-correo" class="field-input" placeholder="ejemplo@automax.com" data-i18n="ph_correo"
+                autocomplete="email" />
+            </div>
+            <span class="field-error" id="lg-err-correo"></span>
+          </div>
+          <div class="field-group" id="lg-fg-password">
+            <label class="field-label" data-i18n="lbl_contrasena">Contraseña</label>
+            <div class="password-field input-with-icon">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="lg-password" class="field-input" placeholder="••••••••" data-i18n="ph_password"
+                autocomplete="current-password" />
+<button type="button" class="toggle-pass" onclick="togglePassword('lg-password', this)"><i
+                  data-lucide="eye-off"></i></button>
+                </div>
+            <span class="field-error" id="lg-err-password"></span>
+            <!-- ===== NUEVO ENLACE ===== -->
+            <a href="#" class="forgot-link" onclick="recuperarContrasena(event)" data-i18n="login_forgot">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="field-group remember-group">
+            <input type="checkbox" id="remember-me" />
+            <label for="remember-me" data-i18n="login_remember">Recordarme</label>
+          </div>
+          <button type="submit" class="btn-primary"><span id="lg-btn-text"><span data-i18n="login_btn_login">Iniciar sesión</span></span></button>
+          <div class="divider" data-i18n="login_divider">o</div>
+          <button type="button" class="btn-ghost" onclick="entrarComoInvitado()"><span data-i18n="login_btn_guest">Entrar como invitado</span></button>
+        </form>
+
+        <!-- Register -->
+        <form id="form-register" class="auth-form hidden" onsubmit="event.preventDefault(); handleRegister();">
+          <div class="form-title">
+            <h2 data-i18n="register_title">Crear cuenta</h2>
+            <p data-i18n="register_subtitle">Regístrate para gestionar tu flota</p>
+          </div>
+          <div class="field-group" id="rg-fg-nombre">
+            <label class="field-label" data-i18n="lbl_nombre">Nombre completo</label>
+            <div class="input-with-icon">
+              <i data-lucide="user" class="input-icon"></i>
+              <input type="text" id="rg-nombre" class="field-input" placeholder="Juan Pérez" data-i18n="ph_nombre" autocomplete="name" />
+            </div>
+            <span class="field-error" id="rg-err-nombre"></span>
+          </div>
+          <div class="field-group" id="rg-fg-correo">
+            <label class="field-label" data-i18n="lbl_correo">Correo electrónico</label>
+            <div class="input-with-icon">
+              <i data-lucide="mail" class="input-icon"></i>
+              <input type="email" id="rg-correo" class="field-input" placeholder="ejemplo@automax.com" data-i18n="ph_correo"
+                autocomplete="email" />
+            </div>
+            <span class="field-error" id="rg-err-correo"></span>
+          </div>
+          <div class="field-group" id="rg-fg-password">
+            <label class="field-label" data-i18n="lbl_contrasena">Contraseña</label>
+            <div class="password-field input-with-icon">
+              <i data-lucide="lock" class="input-icon"></i>
+              <input type="password" id="rg-password" class="field-input" placeholder="••••••••" data-i18n="ph_password"
+                autocomplete="new-password" />
+              <button type="button" class="toggle-pass" onclick="togglePassword('rg-password', this)"><i
+                  data-lucide="eye-off"></i></button>
+            </div>
+            <div id="password-requirements" class="req-list">
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i> <span data-i18n="perfil_pass_req_min">Mínimo 6 caracteres</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i> <span data-i18n="perfil_pass_req_upper">Al menos una mayúscula</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i> <span data-i18n="perfil_pass_req_number">Al menos un número</span></li>
+              <li class="unmet"><i data-lucide="x-circle" class="req-icon"></i> <span data-i18n="perfil_pass_req_special">Al menos un carácter especial</span></li>
+            </div>
+            <div class="strength-bar">
+              <div id="password-strength" style="width:0%"></div>
+            </div>
+            <span class="field-error" id="rg-err-password"></span>
+          </div>
+          <div class="field-group select-group" id="rg-fg-sucursal">
+            <label class="field-label-static" data-i18n="lbl_suc_trabajas">Sucursal donde trabajas</label>
+            <div class="custom-select" id="rg-sucursal-dropdown">
+              <button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-select-icon"></span>
+                <span class="custom-select-value" data-i18n="ph_suc_select">— Selecciona tu sucursal —</span>
+                <i class="custom-select-arrow" data-lucide="chevron-down"></i>
+              </button>
+              <ul class="custom-select-options" role="listbox"></ul>
+            </div>
+            <select id="rg-sucursal" class="field-select sr-only-select" tabindex="-1" aria-hidden="true">
+              <option value="" data-i18n="ph_suc_select">— Selecciona tu sucursal —</option>
+            </select>
+            <span class="field-error" id="rg-err-sucursal"></span>
+          </div>
+          <button type="submit" class="btn-primary"><span id="rg-btn-text"><span data-i18n="login_btn_register">Registrarse</span></span></button>
+          <div class="divider" data-i18n="login_divider">o</div>
+          <button type="button" class="btn-ghost" onclick="entrarComoInvitado()"><span data-i18n="login_btn_guest">Entrar como invitado</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+
+  <div id="recovery-modal" class="recovery-modal" style="display:none;">
+    <div class="recovery-overlay"></div>
+    <div class="recovery-box">
+      <button class="recovery-close" onclick="closeRecoveryModal()">✕</button>
+      <div class="recovery-icon"><i data-lucide="lock" style="width:48px;height:48px;color:var(--white);"></i></div>
+      <h3 class="recovery-title" data-i18n="recovery_title">Recuperar contraseña</h3>
+      <p class="recovery-sub" data-i18n="recovery_sub">Ingresa tu correo y recupera tu clave.</p>
+      <div class="recovery-field">
+        <div class="input-with-icon">
+          <i data-lucide="mail" class="input-icon"></i>
+          <input type="email" id="recovery-email" class="field-input" placeholder="ejemplo@automax.com" data-i18n="ph_correo" />
+        </div>
+      </div>
+      <div id="recovery-result" style="display:none;" class="recovery-result">
+        <p class="recovery-password-label" data-i18n="recovery_label">Tu clave es:</p>
+        <p class="recovery-password" id="recovery-password-text"></p>
+      </div>
+      <button class="btn-primary recovery-btn" onclick="verClave()" data-i18n="recovery_btn">Ver mi clave</button>
+    </div>
+  </div>
+
+</body>
+
+</html>

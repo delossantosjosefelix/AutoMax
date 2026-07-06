@@ -1,0 +1,338 @@
+/* AUTOMAX — INVENTARIO / NUEVOS / USADOS */
+
+
+/* ─── TOOLBAR ──────────────────────────── */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.toolbar .search-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    color: #888;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all var(--d-fast);
+    white-space: nowrap;
+}
+.toolbar-btn i, .toolbar-btn svg { width: 15px; height: 15px; }
+.toolbar-btn:hover { background: rgba(255,255,255,0.06); color: #ccc; }
+.toolbar-btn.is-active { background: #1a1a1a; color: #fff; border-color: rgba(255,255,255,0.12); }
+
+/* ─── OLD FILTER PANEL (inventario/usados) ─── */
+.filter-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height var(--d-content) var(--ease), opacity var(--d-content) var(--ease), margin-bottom var(--d-content) var(--ease);
+    margin-bottom: 0;
+}
+.filter-panel.is-open {
+    max-height: 280px;
+    opacity: 1;
+    overflow: visible;
+    margin-bottom: 24px;
+}
+.filter-panel-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.filter-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.filter-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255,255,255,0.06);
+    align-self: center;
+    flex-shrink: 0;
+}
+
+/* ─── FILTER DRAWER ────────────────────────── */
+.filter-drawer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height var(--d-content) var(--ease), opacity var(--d-content) var(--ease), margin-bottom var(--d-content) var(--ease);
+    margin-bottom: 0;
+}
+.filter-drawer.is-open {
+    max-height: 300px;
+    opacity: 1;
+    overflow: visible;
+    margin-bottom: 24px;
+}
+.filter-drawer-panel {
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.filter-drawer.is-open .filter-drawer-panel {
+    padding-top: 4px;
+}
+.filter-drawer-body {
+    display: flex;
+    gap: 0;
+    padding: 16px 24px;
+}
+.filter-drawer-section {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0 20px;
+}
+.filter-drawer-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+    align-self: stretch;
+}
+.filter-drawer-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+#filter-group-transmision .filter-btn {
+    padding: 8px 10px;
+}
+.year-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.custom-select--compact .custom-select-trigger {
+    padding: 6px 10px;
+    min-width: 80px;
+    font-size: 13px;
+}
+.custom-select--compact .custom-select-icon {
+    display: flex;
+    align-items: center;
+}
+.custom-select--compact .custom-select-arrow {
+    width: 14px;
+    height: 14px;
+    color: #666;
+}
+.year-sep {
+    color: rgba(255,255,255,0.15);
+    font-size: 13px;
+    font-weight: 300;
+    user-select: none;
+}
+
+
+.view-toggle {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.view-btn {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all var(--d-fast);
+    display: flex; align-items: center;
+}
+.view-btn i, .view-btn svg { width: 16px; height: 16px; }
+.view-btn.active { background: #1a1a1a; color: #fff; }
+.view-btn:not(.active):hover { color: #888; }
+
+.filter-group {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.filter-btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #666;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--d-fast);
+    white-space: nowrap;
+}
+.filter-btn.active { background: #1a1a1a; color: #fff; }
+.filter-btn:not(.active):hover { color: #888; }
+
+.table-wrapper {
+    overflow-x: auto;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+}
+.vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.vehicle-table thead th {
+    text-align: left;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #666;
+    background: #080808;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    white-space: nowrap;
+}
+.vehicle-table tbody td {
+    padding: 14px 16px;
+    color: #ccc;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+}
+.vehicle-table tbody tr:hover td {
+    background: rgba(255,255,255,0.02);
+}
+.vehicle-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+.vehicle-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 20px;
+    transition: border-color var(--d-fast);
+}
+.vehicle-card:hover { border-color: rgba(255,255,255,0.15); }
+.vehicle-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.vehicle-card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    color: #fff;
+}
+.vehicle-card-sub {
+    font-size: 11px;
+    color: #666;
+    font-family: var(--font-mono);
+}
+.vehicle-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.vehicle-card-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.vehicle-card-detail-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #555;
+    font-family: var(--font-mono);
+}
+.vehicle-card-detail-value {
+    font-size: 13px;
+    color: #ddd;
+}
+.vehicle-card-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-number {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+.empty-title {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 4px;
+}
+.empty-sub {
+    font-size: 13px;
+    color: #555;
+}
+
+/* Actions in tables */
+.actions-cell {
+    display: flex;
+    gap: 6px;
+}
+.actions-cell button {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+    color: #888;
+    cursor: pointer;
+    transition: all var(--d-fast);
+    display: flex; align-items: center;
+}
+.actions-cell button i, .actions-cell button svg { width: 14px; height: 14px; }
+@media (max-width: 700px) {
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .search-wrapper { max-width: none; }
+    .filter-group { flex-wrap: wrap; }
+}

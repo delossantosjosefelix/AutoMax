@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Sucursales</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/sucursales.css" />
+</head>
+<body>
+  <main id="main-content">
+    <div class="page-bar">
+      <span class="page-bar-num">05</span>
+      <span class="page-bar-divider"></span>
+      <h2 class="page-bar-title" data-i18n="sec_suc">Sucursales</h2>
+    </div>
+    <section class="section section--dark">
+      <div class="toolbar">
+        <div class="search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="search-sucursales" class="search-input" data-i18n="ph_buscar_suc" placeholder="Buscar sucursal..." oninput="filtrarSucursales()" /></div>
+        <button class="toolbar-btn" onclick="generarPDFSucursales()"><i data-lucide="file-down"></i> <span data-i18n="lbl_pdf">PDF</span></button>
+        <div class="view-toggle">
+          <button id="view-table-suc" class="view-btn active" onclick="setSucursalesView('table')" title="Vista tabla"><i data-lucide="list"></i></button>
+          <button id="view-cards-suc" class="view-btn" onclick="setSucursalesView('cards')" title="Vista tarjetas"><i data-lucide="layout-grid"></i></button>
+        </div>
+      </div>
+      <div id="sucursales-table-wrapper" class="table-wrapper" style="display:none">
+        <table class="vehicle-table">
+          <thead>
+            <tr>
+              <th data-i18n="lbl_suc_nombre">Nombre</th>
+              <th data-i18n="lbl_suc_ciudad">Ciudad</th>
+              <th data-i18n="lbl_suc_direccion">Dirección</th>
+              <th data-i18n="lbl_suc_telefono">Teléfono</th>
+              <th data-i18n="lbl_suc_encargado">Encargado</th>
+              <th data-i18n="th_acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="sucursales-tabla-body"></tbody>
+        </table>
+      </div>
+      <div class="sucursales-grid" id="sucursales-grid"></div>
+      <div id="sucursales-empty" class="empty-state" style="display:none">
+        <span class="empty-number">0</span>
+        <p class="empty-title" data-i18n="empty_suc_title">No hay sucursales registradas.</p>
+        <p class="empty-sub"><span data-i18n="empty_suc_sub">Agrega una sucursal para comenzar.</span></p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Administrar Usuarios</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <main id="main-content">
+    
+    <!-- PAGE BAR -->
+    <div class="page-bar">
+      <span class="page-bar-num">08</span>
+      <span class="page-bar-divider"></span>
+      <h2 class="page-bar-title" data-i18n="sec_admin">Administrar Usuarios</h2>
+    </div>
+
+    <section class="section section--dark">
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="search-wrapper">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="admin-search-input" class="search-input" data-i18n="ph_buscar" placeholder="Buscar usuario..." oninput="filtrarUsuariosAdmin()" />
+        </div>
+      </div>
+
+      <!-- TABLE (DESKTOP) -->
+      <div class="table-wrapper admin-table desktop-only">
+        <table class="vehicle-table">
+          <thead>
+            <tr>
+              <th data-i18n="th_nombre">Nombre</th>
+              <th data-i18n="th_correo">Correo</th>
+              <th data-i18n="th_rol">Rol</th>
+              <th data-i18n="th_suc">Sucursal</th>
+              <th data-i18n="th_veh_reg">Vehículos</th>
+              <th data-i18n="th_estado">Estado</th>
+              <th data-i18n="th_acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="admin-usuarios-body">
+            <tr>
+              <td colspan="7" style="text-align:center;color:rgba(255,255,255,0.2);padding:24px;font-size:12px;" data-i18n="lbl_cargando">Cargando usuarios...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CARDS (MOBILE) -->
+      <div class="admin-mobile-cards mobile-only" id="admin-usuarios-cards-body">
+        <div style="text-align:center;color:rgba(255,255,255,0.2);padding:24px;font-size:12px;" data-i18n="lbl_cargando">Cargando usuarios...</div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

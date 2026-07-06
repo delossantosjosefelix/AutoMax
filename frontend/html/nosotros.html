@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Nosotros</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/nosotros.css" />
+</head>
+<body>
+  <main id="main-content">
+    
+    <div class="page-bar page-bar--simple">
+      <h2 class="page-bar-title" data-i18n="nav_nosotros">Nosotros</h2>
+    </div>
+
+    <section class="section section--dark nosotros-section">
+      <div class="nosotros-content">
+        
+        <!-- TOP SECTION: HISTORY & CAROUSEL -->
+        <div class="top-grid">
+          <div class="carousel-wrapper">
+            <div class="carousel" id="carousel">
+              <div class="carousel-track" id="carousel-track">
+                <div class="carousel-empty">
+                  <i data-lucide="loader-circle"></i>
+                  <span data-i18n="nosotros_carousel_loading">Cargando imágenes...</span>
+                </div>
+              </div>
+              <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Anterior" data-i18n="carousel_prev"><i data-lucide="chevron-left"></i></button>
+              <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Siguiente" data-i18n="carousel_next"><i data-lucide="chevron-right"></i></button>
+              <div class="carousel-dots" id="carousel-dots"></div>
+            </div>
+          </div>
+          <div class="history-block">
+            <div class="block-header">
+              <i data-lucide="book-open" class="block-header-icon"></i>
+              <h2 class="block-title" data-i18n="nosotros_historia_tit">Nuestra Historia</h2>
+            </div>
+            <p class="block-text" data-i18n="nosotros_historia_txt">AUTOMAX nació con una visión clara: transformar la gestión de concesionarios automotrices en República Dominicana. Fundada por un equipo de apasionados del sector automotor, la plataforma surgió de la necesidad de centralizar inventarios, sucursales y ventas en una sola herramienta moderna y accesible. Hoy es el sistema operativo de confianza elegido para optimizar el rendimiento y la fiabilidad diaria.</p>
+            
+            <div class="mv-grid">
+              <div class="mv-block">
+                <h3 class="mv-title" data-i18n="nosotros_mision_tit">Misión</h3>
+                <p class="mv-text" data-i18n="nosotros_mision_txt">Proporcionar una plataforma robusta y fácil de usar que facilite el control de inventario y seguimiento de vehículos en tiempo real, optimizando la operación diaria.</p>
+              </div>
+              <div class="mv-block">
+                <h3 class="mv-title" data-i18n="nosotros_vision_tit">Visión</h3>
+                <p class="mv-text" data-i18n="nosotros_vision_txt">Convertirnos en la herramienta líder de gestión vehicular, reconocida por su eficiencia, confiabilidad y soporte, impulsando la digitalización automotriz.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MIDDLE SECTION: NORMAS DE USO (FULL WIDTH) -->
+        <div class="norms-section-panel">
+          <div class="norms-header">
+            <i data-lucide="scale"></i>
+            <h3 data-i18n="nosotros_normas_tit">Normas de Uso y Lineamientos</h3>
+          </div>
+          <ul class="norms-list-grid">
+            <li>
+              <i data-lucide="check-circle"></i>
+              <div>
+                <strong data-i18n="nosotros_norma_1_tit">Seguridad de Acceso</strong>
+                <span data-i18n="nosotros_norma_1_desc">Mantén tus credenciales seguras y no compartas cuentas de acceso.</span>
+              </div>
+            </li>
+            <li>
+              <i data-lucide="check-circle"></i>
+              <div>
+                <strong data-i18n="nosotros_norma_2_tit">Integridad de los Datos</strong>
+                <span data-i18n="nosotros_norma_2_desc">Ingresa datos verídicos, códigos válidos y fotos reales en cada registro.</span>
+              </div>
+            </li>
+            <li>
+              <i data-lucide="check-circle"></i>
+              <div>
+                <strong data-i18n="nosotros_norma_3_tit">Niveles de Autorización</strong>
+                <span data-i18n="nosotros_norma_3_desc">Respeta los roles operativos; solo gerentes y administradores configuran sucursales.</span>
+              </div>
+            </li>
+            <li>
+              <i data-lucide="check-circle"></i>
+              <div>
+                <strong data-i18n="nosotros_norma_4_tit">Uso Profesional</strong>
+                <span data-i18n="nosotros_norma_4_desc">El uso del sistema se limita exclusivamente a fines operativos del concesionario.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BOTTOM SECTION: FEATURES SHOWCASE -->
+        <div class="features-showcase">
+          <div class="features-showcase-header">
+            <i data-lucide="layout-dashboard" class="block-header-icon"></i>
+            <h2 class="block-title" data-i18n="nosotros_features_tit">Qué Ofrece el Sistema</h2>
+          </div>
+          <div class="features-showcase-grid">
+            <div class="features-tabs" id="features-tabs">
+              <!-- Tabs populated dynamically -->
+            </div>
+            <div class="feature-description" id="feature-description">
+              <div class="desc-placeholder">
+                <i data-lucide="arrow-left" class="arrow-indicator"></i>
+                <span data-i18n="nosotros_features_placeholder">Selecciona una funcionalidad para ver más detalles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="nosotros-footer">
+        <span class="footer-version">AUTOMAX v2.0</span>
+        <span class="footer-bar">|</span>
+        <span class="footer-copy" data-i18n="ft_copy">© 2026 AUTOMAX — Todos los derechos reservados</span>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

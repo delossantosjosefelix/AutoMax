@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTOMAX — Registro</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/registro.css" />
+</head>
+<body>
+  <main id="main-content">
+    <div class="page-bar">
+      <span class="page-bar-num">06</span>
+      <span class="page-bar-divider"></span>
+      <h2 class="page-bar-title" data-i18n="sec_reg">Registro</h2>
+    </div>
+    <section class="section section--dark">
+      <div class="reg-tabs">
+        <button id="reg-tab-btn-vehiculo" class="reg-tab-btn active" data-tab="vehiculo" onclick="switchRegistroTab('vehiculo')"><span data-i18n="tab_reg_vehiculo">Vehículo</span></button>
+        <button id="reg-tab-btn-sucursal" class="reg-tab-btn" data-tab="sucursal" onclick="switchRegistroTab('sucursal')"><span data-i18n="tab_reg_sucursal">Sucursal</span></button>
+      </div>
+      <div id="reg-tab-vehiculo" class="reg-tab-panel active">
+        <div class="form-wrapper">
+          <form id="form-vehiculo" onsubmit="event.preventDefault();guardarDatos()">
+            <!-- Progress Bar of the Wizard -->
+            <div class="form-wizard-steps">
+              <button type="button" class="wizard-step active" data-step="1" onclick="goToStep(1)">
+                <span class="wizard-step-num">1</span>
+                <span class="wizard-step-label" data-i18n="fs_general">Datos Técnicos</span>
+              </button>
+              <div class="wizard-step-line"></div>
+              <button type="button" class="wizard-step" data-step="2" onclick="goToStep(2)">
+                <span class="wizard-step-num">2</span>
+                <span class="wizard-step-label" data-i18n="fs_precio">Comercial &#38; Fotos</span>
+              </button>
+            </div>
+
+            <!-- Paso 1: Información Técnica -->
+            <div class="form-step active" data-step="1">
+              <div class="form-section">
+                <div class="form-section-title" data-i18n="fs_general">Información básica</div>
+                <div class="form-grid form-grid--two">
+                  <div class="field-group" id="fg-codigo">
+                    <label for="codigo" class="field-label" data-i18n="lbl_cod">Código</label>
+                    <input type="text" id="codigo" class="field-input" data-i18n="ph_cod" placeholder="Ej. AM01" autocomplete="off" />
+                    <span class="field-error" id="err-codigo"></span>
+                  </div>
+                  <div class="field-group" id="fg-anio">
+                    <label for="anio" class="field-label" data-i18n="lbl_anio">Año</label>
+                    <div class="qty-stepper year-stepper">
+                      <button type="button" class="qty-btn" id="anio-minus" aria-label="Restar año">−</button>
+                      <input type="number" id="anio" class="field-input qty-input" data-i18n="ph_anio" placeholder="2024" min="1990" max="2026" />
+                      <button type="button" class="qty-btn" id="anio-plus" aria-label="Sumar año">+</button>
+                    </div>
+                    <span class="field-error" id="err-anio"></span>
+                  </div>
+                </div>
+                <div class="form-grid form-grid--two">
+                  <div class="field-group" id="fg-marca">
+                    <label for="marca" class="field-label" data-i18n="lbl_marca">Marca</label>
+                    <input type="text" id="marca" class="field-input" data-i18n="ph_marca" placeholder="Ej. Toyota" autocomplete="off" />
+                    <span class="field-error" id="err-marca"></span>
+                  </div>
+                  <div class="field-group" id="fg-modelo">
+                    <label for="modelo" class="field-label" data-i18n="lbl_mod">Modelo</label>
+                    <input type="text" id="modelo" class="field-input" data-i18n="ph_mod" placeholder="Ej. Hilux" autocomplete="off" />
+                    <span class="field-error" id="err-modelo"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section form-section--last">
+                <div class="form-section-title" data-i18n="fs_specs">Especificaciones</div>
+                <div class="form-grid form-grid--two">
+                  <div class="field-group" id="fg-color">
+                    <label for="color" class="field-label" data-i18n="lbl_color">Color</label>
+                    <div class="color-field-wrapper">
+                      <input type="text" id="color" class="field-input color-input" data-i18n="ph_color" placeholder="Ej. Negro Mate" autocomplete="off" />
+                      <button type="button" class="color-trigger" id="color-trigger" aria-haspopup="true" aria-expanded="false" aria-label="Elegir color" title="Seleccionar color">
+                        <span class="color-preview" id="color-preview"></span>
+                        <i data-lucide="palette"></i>
+                      </button>
+                      <div class="color-popover" id="color-popover">
+                        <div class="color-swatches" id="color-swatches">
+                          <button type="button" class="swatch-btn" data-color="Negro" style="--sw-color:#0a0a0a;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_negro">Negro</span></button>
+                          <button type="button" class="swatch-btn" data-color="Blanco" style="--sw-color:#f5f5f5;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_blanco">Blanco</span></button>
+                          <button type="button" class="swatch-btn" data-color="Gris" style="--sw-color:#8a8a8a;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_gris">Gris</span></button>
+                          <button type="button" class="swatch-btn" data-color="Plata" style="--sw-color:#c0c0c0;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_plata">Plata</span></button>
+                          <button type="button" class="swatch-btn" data-color="Rojo" style="--sw-color:#c0392b;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_rojo">Rojo</span></button>
+                          <button type="button" class="swatch-btn" data-color="Azul" style="--sw-color:#2e5fa3;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_azul">Azul</span></button>
+                          <button type="button" class="swatch-btn" data-color="Verde" style="--sw-color:#2e7d4f;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_verde">Verde</span></button>
+                          <button type="button" class="swatch-btn" data-color="Amarillo" style="--sw-color:#e0c12e;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_amarillo">Amarillo</span></button>
+                          <button type="button" class="swatch-btn" data-color="Naranja" style="--sw-color:#d9772f;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_naranja">Naranja</span></button>
+                          <button type="button" class="swatch-btn" data-color="Café" style="--sw-color:#6b4423;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_cafe">Café</span></button>
+                          <button type="button" class="swatch-btn" data-color="Dorado" style="--sw-color:#c9a13b;"><span class="swatch-box"></span><span class="swatch-name" data-i18n-color="sw_dorado">Dorado</span></button>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="field-error" id="err-color"></span>
+                  </div>
+                  <div class="field-group" id="fg-combustible">
+                    <label class="field-label" data-i18n="lbl_comb">Combustible</label>
+                    <div id="fuel-select" class="custom-select">
+                      <button type="button" class="custom-select-trigger">
+                        <span class="custom-select-icon"></span>
+                        <span class="custom-select-value" data-i18n="opt_sel">Seleccionar</span>
+                        <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+                      </button>
+                      <ul class="custom-select-options">
+                        <li class="custom-select-option" data-value="Gasolina" data-icon="fuel"><i data-lucide="fuel"></i><span><span data-i18n="filter_gas">Gasolina</span></span></li>
+                        <li class="custom-select-option" data-value="Diésel" data-icon="droplet"><i data-lucide="droplet"></i><span><span data-i18n="filter_diesel">Diésel</span></span></li>
+                        <li class="custom-select-option" data-value="Eléctrico" data-icon="zap"><i data-lucide="zap"></i><span><span data-i18n="filter_electric">Eléctrico</span></span></li>
+                        <li class="custom-select-option" data-value="Híbrido" data-icon="refresh-cw"><i data-lucide="refresh-cw"></i><span><span data-i18n="filter_hybrid">Híbrido</span></span></li>
+                        <li class="custom-select-option" data-value="GLP" data-icon="flame"><i data-lucide="flame"></i><span><span data-i18n="filter_glp">GLP</span></span></li>
+                      </ul>
+                    </div>
+                    <select id="combustible" class="field-select sr-only-select" tabindex="-1" aria-hidden="true">
+                      <option value=""><span data-i18n="opt_sel">Seleccionar</span></option>
+                      <option value="Gasolina">Gasolina</option>
+                      <option value="Diésel">Diésel</option>
+                      <option value="Eléctrico">Eléctrico</option>
+                      <option value="Híbrido">Híbrido</option>
+                      <option value="GLP">GLP</option>
+                    </select>
+                    <span class="field-error" id="err-combustible"></span>
+                  </div>
+                </div>
+                <div class="form-grid form-grid--two">
+                  <div class="field-group" id="fg-transmision">
+                    <label class="field-label" data-i18n="th_trans">Transmisión</label>
+                    <div id="transmision-dropdown" class="custom-select">
+                      <button type="button" class="custom-select-trigger">
+                        <span class="custom-select-icon"></span>
+                        <span class="custom-select-value" data-i18n="opt_sel">Seleccionar</span>
+                        <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+                      </button>
+                      <ul class="custom-select-options">
+                        <li class="custom-select-option" data-value="Automática" data-icon="cog"><i data-lucide="cog"></i><span><span data-i18n="opt_auto">Automática</span></span></li>
+                        <li class="custom-select-option" data-value="Manual" data-icon="hand"><i data-lucide="hand"></i><span><span data-i18n="opt_manual">Manual</span></span></li>
+                        <li class="custom-select-option" data-value="CVT" data-icon="infinity"><i data-lucide="infinity"></i><span>CVT</span></li>
+                      </ul>
+                    </div>
+                    <select id="transmision" class="field-select sr-only-select" tabindex="-1" aria-hidden="true">
+                      <option value="">Seleccionar</option>
+                      <option value="Automática">Automática</option>
+                      <option value="Manual">Manual</option>
+                      <option value="CVT">CVT</option>
+                    </select>
+                    <span class="field-error" id="err-transmision"></span>
+                  </div>
+                  <div class="field-group" id="fg-condicion">
+                    <label class="field-label" data-i18n="lbl_cond">Condición</label>
+                    <div id="condicion-dropdown" class="custom-select">
+                      <button type="button" class="custom-select-trigger">
+                        <span class="custom-select-icon"></span>
+                        <span class="custom-select-value" data-i18n="opt_sel">Seleccionar</span>
+                        <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+                      </button>
+                      <ul class="custom-select-options">
+                        <li class="custom-select-option" data-value="Nuevo" data-icon="sparkles"><i data-lucide="sparkles"></i><span><span data-i18n="opt_nuevo">Nuevo</span></span></li>
+                        <li class="custom-select-option" data-value="Usado" data-icon="recycle"><i data-lucide="recycle"></i><span><span data-i18n="opt_usado">Usado</span></span></li>
+                      </ul>
+                    </div>
+                    <select id="condicion" class="field-select sr-only-select" tabindex="-1" aria-hidden="true">
+                      <option value="">Seleccionar</option>
+                      <option value="Nuevo">Nuevo</option>
+                      <option value="Usado">Usado</option>
+                    </select>
+                    <span class="field-error" id="err-condicion"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso 2: Comercial & Fotos -->
+            <div class="form-step" data-step="2">
+              <div class="form-section">
+                <div class="form-section-title" data-i18n="fs_precio">Precio y existencias</div>
+                <div class="form-grid form-grid--two">
+                  <div class="field-group" id="fg-precio">
+                    <label for="precio" class="field-label" data-i18n="lbl_precio">Precio (USD)</label>
+                    <div class="price-field">
+                      <span class="price-prefix">$</span>
+                      <input type="number" id="precio" class="price-input" data-i18n="ph_precio" placeholder="25,000.00" min="1" step="0.01" />
+                    </div>
+                    <span class="price-helper" id="price-helper"></span>
+                    <span class="field-error" id="err-precio"></span>
+                  </div>
+                  <div class="field-group" id="fg-cantidad">
+                    <label for="cantidad" class="field-label" data-i18n="lbl_cant">Cantidad</label>
+                    <div class="qty-stepper">
+                      <button type="button" class="qty-btn" id="qty-minus" aria-label="Restar">−</button>
+                      <input type="number" id="cantidad" class="field-input qty-input" data-i18n="ph_cant" placeholder="0" min="1" step="1" />
+                      <button type="button" class="qty-btn" id="qty-plus" aria-label="Sumar">+</button>
+                    </div>
+                    <span class="field-error" id="err-cantidad"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title" data-i18n="fs_ubicacion">Ubicación</div>
+                <div class="field-group field-group--full" id="fg-sucursal_id">
+                  <label class="field-label" data-i18n="th_suc">Sucursal</label>
+                  <div id="sucursal-dropdown" class="custom-select">
+                    <button type="button" class="custom-select-trigger">
+                      <span class="custom-select-icon"></span>
+                      <span class="custom-select-value" data-i18n="opt_sin_suc">Sin sucursal</span>
+                      <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+                    </button>
+                    <ul class="custom-select-options"></ul>
+                  </div>
+                  <select id="sucursal_id" class="field-select sr-only-select" tabindex="-1" aria-hidden="true"></select>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section-title" data-i18n="lbl_img">Multimedia</div>
+                <div class="field-group field-group--full" id="fg-imagen">
+                  <label class="field-label" data-i18n="lbl_img">Imagen del Vehículo</label>
+                  <div class="image-upload-wrapper">
+                    <label for="imagen" class="custom-upload-box" id="custom-upload-box">
+                      <i data-lucide="image" class="upload-icon"></i>
+                      <span class="upload-text" data-i18n="upload_text">Selecciona o arrastra una imagen aquí</span>
+                      <span class="upload-subtext" data-i18n="upload_sub">Formatos permitidos: JPG, PNG, WEBP (Max. 5MB)</span>
+                    </label>
+                    <input type="file" id="imagen" class="sr-only-file" accept="image/*" />
+                    <div class="image-preview-container" id="image-preview-container" style="display: none;">
+                      <img src="" alt="Previsualización" class="image-preview-img" id="image-preview-img" />
+                      <button type="button" class="btn-remove-preview" id="btn-remove-preview" title="Quitar imagen">
+                        <i data-lucide="x"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section form-section--last">
+                <div class="form-section-title" data-i18n="lbl_desc">Descripción</div>
+                <div class="field-group field-group--full" id="fg-descripcion">
+                  <textarea id="descripcion" class="field-input field-textarea" data-i18n="ph_desc" placeholder="Ej. Vehículo de transmisión automática..." rows="2"></textarea>
+                  <span class="field-error" id="err-descripcion"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Wizard Actions -->
+            <div class="form-actions">
+              <button type="button" class="btn btn--ghost" id="btn-prev-step" onclick="goToStep(1)" style="display:none"><span class="btn-text" data-i18n="btn_anterior">Anterior</span></button>
+              <button type="button" class="btn btn--primary" id="btn-next-step" onclick="goToStep(2)"><span class="btn-text" data-i18n="btn_siguiente">Siguiente</span></button>
+              <button type="submit" class="btn btn--primary" id="btn-submit" style="display:none"><span class="btn-text" data-i18n="btn_reg">Registrar Vehículo</span></button>
+              <button type="button" class="btn btn--ghost" id="btn-cancel" style="display:none" onclick="cancelarEdicion()"><span data-i18n="btn_cancel">Cancelar</span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="reg-tab-sucursal" class="reg-tab-panel">
+        <div class="form-wrapper">
+          <form id="form-sucursal" onsubmit="event.preventDefault();guardarSucursal()">
+            <div class="form-section">
+              <div class="form-section-title" data-i18n="form_ubicacion">Ubicación</div>
+              <div class="form-grid form-grid--two">
+                <div class="field-group" id="fg-suc-nombre">
+                  <label for="suc-nombre" class="field-label" data-i18n="lbl_suc_nombre">Nombre</label>
+                  <input type="text" id="suc-nombre" class="field-input" placeholder="Ej. Sucursal Centro" data-i18n="ph_suc_nombre" autocomplete="off" />
+                  <span class="field-error" id="err-suc-nombre"></span>
+                </div>
+                <div class="field-group" id="fg-suc-ciudad">
+                  <label for="suc-ciudad" class="field-label" data-i18n="lbl_suc_ciudad">Ciudad</label>
+                  <input type="text" id="suc-ciudad" class="field-input" placeholder="Ej. Santo Domingo" data-i18n="ph_suc_ciudad" autocomplete="off" />
+                  <span class="field-error" id="err-suc-ciudad"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-section form-section--last">
+              <div class="form-section-title" data-i18n="form_contacto">Contacto</div>
+              <div class="form-grid form-grid--two">
+                <div class="field-group" id="fg-suc-direccion">
+                  <label for="suc-direccion" class="field-label" data-i18n="lbl_suc_direccion">Dirección</label>
+                  <input type="text" id="suc-direccion" class="field-input" placeholder="Ej. Av. Reforma 123" data-i18n="ph_suc_direccion" autocomplete="off" />
+                  <span class="field-error" id="err-suc-direccion"></span>
+                </div>
+                <div class="field-group" id="fg-suc-telefono">
+                  <label for="suc-telefono" class="field-label" data-i18n="lbl_suc_telefono">Teléfono</label>
+                  <input type="text" id="suc-telefono" class="field-input" placeholder="Ej. 55 1234 5678" data-i18n="ph_suc_telefono" autocomplete="off" />
+                  <span class="field-error" id="err-suc-telefono"></span>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="field-group" id="fg-suc-encargado">
+                  <label class="field-label" data-i18n="lbl_suc_encargado">Encargado</label>
+                  <div id="encargado-dropdown" class="custom-select">
+                    <button type="button" class="custom-select-trigger">
+                      <span class="custom-select-icon"></span>
+                      <span class="custom-select-value" data-i18n="ph_suc_encargado">Seleccionar encargado</span>
+                      <i data-lucide="chevron-down" class="custom-select-arrow"></i>
+                    </button>
+                    <ul class="custom-select-options"></ul>
+                  </div>
+                  <select id="suc-encargado" class="field-select sr-only-select" tabindex="-1" aria-hidden="true"></select>
+                  <span class="field-error" id="err-suc-encargado"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary" id="suc-btn-submit"><span id="suc-btn-text"><span data-i18n="btn_suc_reg">Registrar Sucursal</span></span></button>
+              <button type="button" class="btn btn--ghost" id="btn-suc-cancel" style="display:none" onclick="cancelarEdicionSucursal()"><span data-i18n="btn_cancel">Cancelar</span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

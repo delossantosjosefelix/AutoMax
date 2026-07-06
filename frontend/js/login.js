@@ -3,7 +3,7 @@ const API = 'http://localhost:3000/api/auth';
 
 // ─── SEGURIDAD ───────────────
 if (localStorage.getItem('amToken') || localStorage.getItem('amGuest') === 'true') {
-    window.location.replace('index.html');
+    window.location.replace('app.html#dashboard');
 }
 
 // ─── INICIALIZACIÓN ───────────
@@ -15,6 +15,7 @@ window.onload = function() {
     }
     if (window.lucide) lucide.createIcons();
     setupRealtimeValidation();
+    cargarSucursalesRegistro();
 
     // Cerrar modal de recuperación al hacer clic en el overlay
     const overlay = document.querySelector('.recovery-overlay');
@@ -137,6 +138,93 @@ function setupRealtimeValidation() {
     }
 }
 
+// ─── SUCURSAL (para registro de empleados) ────
+const SUCURSAL_COLORS = ["#C0C0C0","#4A90E2","#FF9F0A","#4CAF50","#FF3B30","#AF52DE","#FF9500","#5AC8FA"];
+function getSucursalColor(id) {
+  return SUCURSAL_COLORS[Number(id) % SUCURSAL_COLORS.length];
+}
+async function cargarSucursalesRegistro() {
+    const select = document.getElementById('rg-sucursal');
+    const dropdown = document.getElementById('rg-sucursal-dropdown');
+    const optionsList = dropdown?.querySelector('.custom-select-options');
+    if (!select) return;
+    try {
+        const res = await fetch('http://localhost:3000/sucursales');
+        const sucursales = await res.json();
+        // Fill native select
+        select.innerHTML = '<option value="">— Selecciona tu sucursal —</option>';
+        // Fill custom dropdown
+        if (optionsList) optionsList.innerHTML = '';
+        sucursales.forEach(s => {
+            const color = s.color || getSucursalColor(s.id);
+            // Native option
+            const opt = document.createElement('option');
+            opt.value = s.id;
+            opt.textContent = `${s.nombre} (${s.ciudad})`;
+            select.appendChild(opt);
+            // Custom dropdown item
+            if (optionsList) {
+                const li = document.createElement('li');
+                li.className = 'custom-select-option';
+                li.setAttribute('role', 'option');
+                li.dataset.value = s.id;
+                li.dataset.color = color;
+                li.innerHTML = `<span class="branch-dot" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${color};flex-shrink:0;"></span><span>${s.nombre} (${s.ciudad})</span>`;
+                optionsList.appendChild(li);
+            }
+        });
+        // Initialize custom select behavior
+        if (dropdown) {
+            const trigger = dropdown.querySelector('.custom-select-trigger');
+            const valueEl = dropdown.querySelector('.custom-select-value');
+            if (trigger) {
+                trigger.onclick = function(e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('is-open');
+                };
+            }
+            if (optionsList) {
+                optionsList.querySelectorAll('.custom-select-option').forEach(li => {
+                    li.onclick = function() {
+                        const val = this.dataset.value;
+                        select.value = val;
+                        const spans = this.querySelectorAll('span');
+                        const labelSpan = spans.length > 1 ? spans[spans.length - 1] : spans[0];
+                        if (valueEl) valueEl.textContent = labelSpan.textContent;
+                        optionsList.querySelectorAll('.custom-select-option').forEach(o => o.classList.remove('is-active'));
+                        this.classList.add('is-active');
+                        dropdown.classList.remove('is-open');
+                        // Update trigger icon with color dot
+                        const iconEl = dropdown.querySelector('.custom-select-icon');
+                        if (iconEl) {
+                            iconEl.className = 'custom-select-icon';
+                            iconEl.innerHTML = '';
+                            if (this.dataset.color) {
+                                iconEl.classList.add('has-icon');
+                                const dot = document.createElement('span');
+                                dot.className = 'branch-dot';
+                                dot.style.cssText = `display:inline-block;width:10px;height:10px;border-radius:50%;background:${this.dataset.color};flex-shrink:0;`;
+                                iconEl.appendChild(dot);
+                            }
+                        }
+                        // Clear error
+                        const err = document.getElementById('rg-err-sucursal');
+                        if (err) err.textContent = '';
+                        const fg = document.getElementById('rg-fg-sucursal');
+                        if (fg) { fg.classList.remove('has-error'); fg.classList.add('has-success'); }
+                    };
+                });
+            }
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target)) dropdown.classList.remove('is-open');
+            });
+        }
+        if (window.lucide) lucide.createIcons();
+    } catch (err) {
+        // Si el backend no está disponible, el select simplemente queda con la opción por defecto
+    }
+}
+
 // ─── TOAST SYSTEM ──────────────
 function showToast(message, type = 'success') {
     const container = document.getElementById('toast-container');
@@ -145,10 +233,11 @@ function showToast(message, type = 'success') {
         return;
     }
     const toast = document.createElement('div');
-    const icons = { success: '✓', error: '✕', warning: '⚠️', delete: '◆' };
+    const icons = { success: 'check-circle', error: 'alert-circle', warning: 'alert-triangle', info: 'info', delete: 'trash-2' };
     toast.className = `toast toast--${type}`;
-    toast.innerHTML = `<span class="toast-icon">${icons[type] || '●'}</span><span>${message}</span>`;
+    toast.innerHTML = `<span class="toast-icon"><i data-lucide="${icons[type] || 'info'}"></i></span><span>${message}</span>`;
     container.appendChild(toast);
+    if (window.lucide) lucide.createIcons();
     requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('show')));
     setTimeout(() => {
         toast.classList.remove('show');
@@ -207,6 +296,7 @@ async function handleRegister() {
     const nombre = document.getElementById('rg-nombre').value.trim();
     const correo = document.getElementById('rg-correo').value.trim();
     const password = document.getElementById('rg-password').value;
+    const sucursal_id = document.getElementById('rg-sucursal').value;
 
     let valid = true;
     if (!nombre) { setError('rg', 'nombre', 'Campo obligatorio'); valid = false; }
@@ -222,6 +312,7 @@ async function handleRegister() {
             valid = false;
         }
     }
+    if (!sucursal_id) { setError('rg', 'sucursal', 'Selecciona tu sucursal'); valid = false; }
     if (!valid) return;
 
     const btn = document.getElementById('rg-btn-text');
@@ -232,7 +323,7 @@ async function handleRegister() {
         const res = await fetch(`${API}/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, correo, password })
+            body: JSON.stringify({ nombre, correo, password, sucursal_id })
         });
         const data = await res.json();
 
@@ -254,7 +345,7 @@ function entrarComoInvitado() {
     localStorage.removeItem('amToken');
     localStorage.removeItem('amUsuario');
     localStorage.setItem('amGuest', 'true');
-    window.location.replace('index.html');
+    window.location.replace('app.html#dashboard');
 }
 
 // ─── HELPERS ──────────────────────────
@@ -262,7 +353,7 @@ function guardarSesion(token, usuario) {
     localStorage.setItem('amToken', token);
     localStorage.setItem('amUsuario', JSON.stringify(usuario));
     localStorage.removeItem('amGuest');
-    window.location.replace('index.html');
+    window.location.replace('app.html#dashboard');
 }
 
 function switchTab(tab) {
@@ -286,11 +377,12 @@ function switchTab(tab) {
 
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
+    if (!input) return;
     const isPassword = input.type === 'password';
     input.type = isPassword ? 'text' : 'password';
-    const icon = btn.querySelector('i');
+    const icon = btn.querySelector('[data-lucide]');
     if (icon) {
-        icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+        icon.setAttribute('data-lucide', isPassword ? 'eye' : 'eye-off');
         if (window.lucide) lucide.createIcons();
     }
 }
@@ -362,7 +454,7 @@ async function verClave() {
         // Mostrar la clave real
         passwordText.textContent = data.clave;
         resultDiv.style.display = 'block';
-        showToast('🔑 Clave encontrada para ' + email, 'success');
+        showToast('Clave encontrada para ' + email, 'success');
 
     } catch (error) {
         showToast('Error al conectar con el servidor.', 'error');
