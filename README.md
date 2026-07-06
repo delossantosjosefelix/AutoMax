@@ -12,7 +12,7 @@
 
 **Student ID:** 2024-1135
 
-![image alt](screenshot.png)   
+![image alt](AUTOMAX.png)   
 
 ## Project Objective
 
