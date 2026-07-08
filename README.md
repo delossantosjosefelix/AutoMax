@@ -8,7 +8,7 @@
 
 **University:** Universidad Católica del Cibao (UCATECI)
 
-**Student:** José Félix DLS
+**Student:** José Felix DLS
 
 **Student ID:** 2024-1135
 
